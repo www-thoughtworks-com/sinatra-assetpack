@@ -46,6 +46,7 @@ module Sinatra
           raise Error, "Please set :root in your Sinatra app."
         end
 
+        @environments = [:production]
         @app             = app
         @js_compression  = :jsmin
         @css_compression = :simple
@@ -140,6 +141,10 @@ module Sinatra
         js_or_css :css, name, *args
       end
 
+      def pre_build_for(*environments)
+        @enviroments = environments
+      end
+
       def js_or_css(type, name, *args)
         # Account for "css :name, '/path/to/css', [ files ]"
         if args[0].is_a?(String) && args[1].respond_to?(:each)
@@ -157,6 +162,7 @@ module Sinatra
         @packages["#{name}.#{type}"] = Package.new(self, name, type, path, files)
       end
 
+      attr_reader   :environments
       attr_reader   :app        # Sinatra::Base instance
       attr_reader   :packages   # Hash, keys are "foo.js", values are Packages
       attr_reader   :served     # Hash, paths to be served.
