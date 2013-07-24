@@ -142,7 +142,7 @@ module Sinatra
       end
 
       def pre_build_for(*environments)
-        @enviroments = environments
+        @environments = environments
       end
 
       def js_or_css(type, name, *args)
